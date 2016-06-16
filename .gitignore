@@ -3,3 +3,9 @@
 .RData
 *.ipynb
 *.swp
+*.csv
+*.zip
+*.dat
+*.html
+*.pl
+split_ratings.sh
