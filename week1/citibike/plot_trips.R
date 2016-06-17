@@ -7,6 +7,8 @@ library(dplyr)
 library(ggplot2)
 library(reshape)
 library(scales)
+library(tidyr)
+library(lubridate)
 
 # be picky about white backgrounds on our plots
 theme_set(theme_bw())
@@ -32,6 +34,17 @@ ggplot(trips, aes(ymd)) + geom_bar()
 df <- group_by(trips, gender, birth_year) 
 df <- summarize(df, total=n())
 ggplot(df, aes(x = birth_year, y = total, color = as.factor(gender))) + geom_point()
+
+# plot the ratio of male to female trips by age
+# hint: use the spread() function to reshape things to make it easier to compute this ratio
+
+########################################
+# plot weather data
+########################################
+# plot the minimum temperature over each day
+
+# plot the minimum temperature and maximum temperature over each day
+# hint: try using the gather() function for this to reshape things before plotting
 
 ########################################
 # plot trip and weather data
@@ -61,3 +74,11 @@ df <- group_by(trips_with_weather, ymd, tmin, prcp)
 df <- summarize(df, perday = n())
 df <- mutate(df, subst = prcp > 50)
 ggplot(df, aes(x = tmin, y = perday, color = subst)) + geom_point() + geom_smooth()
+
+# compute the average number of trips and standard deviation in number of trips by hour of the day
+# hint: use the hour() function from the lubridate package
+
+# plot the above
+
+# repeat this, but now split the results by day of the week (Monday, Tuesday, ...) or weekday vs. weekend days
+
