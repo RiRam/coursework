@@ -45,15 +45,19 @@ ggplot(df, aes(x = rating)) + geom_bar()
 
 # aggregate ratings by movie, computing mean and number of ratings
 # hint: use the n() function for easy counting within a group
+df <- summarize(group_by(ratings, movie_id), num_ratings = n(), mean_rating = mean(rating))
 
 # plot distribution of movie popularity (= number of ratings the movie received)
 # hint: try scale_x_log10() for a logarithmic x axis
+ggplot(df, aes(x = movie_id, y = num_ratings, scale_x_log10())) + geom_line()
 
 # plot distribution of mean ratings by movie (slide 15)
 # hint: try geom_histogram and geom_density
+ggplot(df, aes(x = mean_rating)) + geom_density()
 
 # rank movies by popularity and compute cdf (slide 17)
 # hint: use dplyr's rank and arrange functions, and the base R sum and cumsum functions
+
 
 # plot the CDF of movie popularity
 
@@ -62,6 +66,8 @@ ggplot(df, aes(x = rating)) + geom_bar()
 ####################
 
 # aggregate ratings by user, computing mean and number of ratings
+df <- summarize(group_by(ratings, user_id), num_ratings = n(), mean_rating = mean(rating))
 
 # plot distribution of user activity (= number of ratings the user made)
 # hint: try a log scale here
+ggplot(df, aes(x = mean_rating)) + geom_density()
