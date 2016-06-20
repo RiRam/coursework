@@ -31,12 +31,15 @@ ggplot(trips, aes(x = trips$tripduration, fill = trips$usertype)) + geom_histogr
 ggplot(trips, aes(ymd)) + geom_bar()
 
 # plot the number of trips by gender and age
-df <- group_by(trips, gender, birth_year) 
+df <- group_by(trips, as.factor(gender), birth_year) 
 df <- summarize(df, total=n())
 ggplot(df, aes(x = birth_year, y = total, color = as.factor(gender))) + geom_point()
 
 # plot the ratio of male to female trips by age
 # hint: use the spread() function to reshape things to make it easier to compute this ratio
+df <- group_by(trips, as.factor(gender), birth_year) 
+df <- summarize(df, total=n())
+df <- spread()
 
 ########################################
 # plot weather data
@@ -49,7 +52,7 @@ ggplot(df, aes(x = date, y = tmin)) + geom_point()
 # plot the minimum temperature and maximum temperature over each day
 # hint: try using the gather() function for this to reshape things before plotting
 df <- gather(weather, "maxmin", "temp", 5:6)
-df <- group_by(df, ymd, temp, maxmin)
+ddf <- group_by(df, ymd, temp, maxmin)
 df <- summarize(df)
 ggplot(df, aes(x = ymd, y = temp, color = maxmin)) + geom_point()
 
@@ -86,8 +89,8 @@ ggplot(df, aes(x = tmin, y = perday, color = subst)) + geom_point() + geom_smoot
 # hint: use the hour() function from the lubridate package
 
 df <- mutate(trips_with_weather, hour = hour(starttime))
-df <- group_by(df, hour, ymd) %>% ungroup()
-df <- select(df, hour,ymd)
+df <- group_by(df, hour, ymd)
+df <- select(df, hour, ymd)
 df <- summarize(df, count = n())
 df <- summarize(group_by(df, hour), m = mean(count), s = sd(count), plus = m+s, minus = m-s)
 
@@ -100,5 +103,16 @@ df <- group_by(df, day)
 df <- select(df, ymd, day)
 df <- summarize(df, num_per_day = n())
 df <- summarize(group_by(df, day), mean = mean(num_per_day), stdev = sd(num_per_day))
-=======
+
+
+numdays <- length(unique(trips$ymd))
+count <- summarize(group_by(trips_with_weather, ymd), days = n())
+
+# using built in mean() function
+df1 <- mutate(trips_with_weather, day = wday(starttime, label = T), hour = hour(starttime)) %>% group_by(ymd, day, hour) %>% summarize(num_trips = n()) %>% group_by(day, hour) %>% summarize(mean_trips = mean(num_trips), sd_trips = sd(num_trips))
+
+# using numdays and sum() to calculate mean
+df2 <- mutate(trips_with_weather, day = wday(starttime, label = T), hour = hour(starttime)) %>% group_by(ymd, day, hour) %>% summarize(num_trips = n()) %>% group_by(day, hour) %>% summarize(mean_trips = sum(num_trips)/numdays, sd_trips = sd(num_trips))
+ggplot(df1, aes(x = hour, y = mean_trips)) + facet_wrap(~ day) + geom_point()
+
 # hint: use the wday() function from the lubridate package
