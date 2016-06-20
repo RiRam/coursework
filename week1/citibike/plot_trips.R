@@ -100,3 +100,5 @@ df <- group_by(df, day)
 df <- select(df, ymd, day)
 df <- summarize(df, num_per_day = n())
 df <- summarize(group_by(df, day), mean = mean(num_per_day), stdev = sd(num_per_day))
+=======
+# hint: use the wday() function from the lubridate package
