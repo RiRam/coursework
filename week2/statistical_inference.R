@@ -52,4 +52,4 @@ ggplot(data=plot_data, aes(x = p_hat, y = n, color = stdev)) + geom_line()
 # Create one plot of the p_hat distributions, faceted by different N values for p = 0.5 using ggplot
 #############################
 
-ggplot(data=plot_data, aes(x = p_hat)) + geom_histogram() + facet_wrap(n)
+ggplot(data=plot_data, aes(x = p_hat)) + geom_histogram() + facet_wrap(as.factor(n))

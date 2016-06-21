@@ -15,7 +15,7 @@ theme_set(theme_bw())
 
 # load RData file output by load_trips.R
 load('trips.RData')
-
+trips <- mutate(trips, gender=factor(gender, levels=c(0,1,2), labels=c("Unknown","Male","Female")))
 
 ########################################
 # plot trip data
@@ -37,9 +37,10 @@ ggplot(df, aes(x = birth_year, y = total, color = as.factor(gender))) + geom_poi
 
 # plot the ratio of male to female trips by age
 # hint: use the spread() function to reshape things to make it easier to compute this ratio
-df <- group_by(trips, as.factor(gender), birth_year) 
+df <- group_by(trips, gender, birth_year) 
 df <- summarize(df, total=n())
-df <- spread()
+df <- spread(df, gender, total)
+ggplot(df, aes(x = birth_year, y=Male/Female)) + geom_line() + geom_smooth()
 
 ########################################
 # plot weather data
