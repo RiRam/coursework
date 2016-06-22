@@ -70,7 +70,7 @@ library(dplyr)
 oj <- mutate(oj, logprice = log10(price))
 
 
-lm.fit=lm(logprice~logmove, oj)
+lm.fit=lm(logmove~logprice, oj)
 summary(lm.fit)
 coefficients(lm.fit)
 # (Intercept)     logmove 
@@ -84,7 +84,7 @@ plot(lm.fit)
 # How do the results change? How should we interpret these coefficients?
 ########################################
 
-lm.fit=lm(logprice~logmove+brand, oj)
+lm.fit=lm(logmove~logprice+brand, oj)
 summary(lm.fit)
 coefficients(lm.fit)
 # (Intercept)          logmove brandminute.maid   brandtropicana 
@@ -100,7 +100,7 @@ plot(lm.fit)
 # What is the insights we get from this regression? What is the elasticity for each firm? 
 # Do the elasticities make sense?
 ########################################
-lm.fit=lm(brand:logprice~logmove, oj)
+lm.fit=lm(logmove~logprice + brand*logprice -1, oj)
 summary(lm.fit)
 coefficients(lm.fit)
 # (Intercept)          logmove brandminute.maid   brandtropicana 
@@ -126,16 +126,32 @@ ggplot(df, aes(x = brand)) + geom_bar()
 # Start with an additive formulation (e.g. feature impacts sales, but not through price).
 ########################################
 
+lm.fit=lm(logmove~logprice + brand*logprice + feat, oj)
+summary(lm.fit)
+coefficients(lm.fit)
 
+par(mfrow=c(2,2))
+plot(lm.fit)
 
 ########################################
 # iii. Now run a model where features can impact sales and price sensitivity.
 ########################################
 
+lm.fit=lm(logmove + feat~logprice + brand*logprice, oj)
+summary(lm.fit)
+coefficients(lm.fit)
 
+par(mfrow=c(2,2))
+plot(lm.fit)
+
+ggplot(oj, aes(x = logprice, y = logmove, color = as.factor(feat))) + geom_smooth(method="lm") + facet_wrap(~ brand) + geom_point()
 
 ########################################
-# iv. Now run a model where each brand can have a different impact of being featured and a different impact on price sensitivity. Produce a table of elasticties for each brand, one row for "featured" and one row for "not featured" (you need 6 estimates).
+# iv. Now run a model where each brand can have a different impact of being featured 
+# and a different impact on price sensitivity. Produce a table of elasticties for each brand, 
+# one row for "featured" and one row for "not featured" (you need 6 estimates).
 ########################################
 
+lm.fit=lm(logmove + ~logprice + brand*logprice, oj)
+summary(lm.fit)
 
