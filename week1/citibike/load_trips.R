@@ -30,6 +30,8 @@ trips <- mutate(trips, ymd=as.Date(starttime))
 ########################################
 
 # load weather data from belvedere tower in central park
+# https://www.ncei.noaa.gov/orders/cdo/762757.csv
+# ordered from
 # http://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USW00094728/detail
 weather <- read.table('weather.csv', header=T, sep=',')
 

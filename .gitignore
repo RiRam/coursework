@@ -9,3 +9,6 @@
 *.html
 *.pl
 split_ratings.sh
+*.csv
+*~
+*.zip
