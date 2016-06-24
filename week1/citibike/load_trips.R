@@ -57,3 +57,7 @@ weather <- tbl_df(weather)
 
 # save data frame for easy loading in the future
 save(trips, weather, file='trips.RData')
+
+
+# join trips and weather
+trips_with_weather <- inner_join(trips, weather, by="ymd")

@@ -54,7 +54,7 @@ train_cor <- c()
 test_cor <- c()
 
 for(k in 1:20) {
-  model <- lm(num_trips~tmin+poly(tmin, k), Ttrain)
+  model <- lm(num_trips~tmin+poly(tmin, k, raw = T), Ttrain)
   Ttrain$predicted <- predict(model, Ttrain)
   Ttest$predicted <- predict(model, Ttest)
   
@@ -72,4 +72,11 @@ ggplot(cor_results) +
 # 6. Finally, fit one model for the value of k with the best performance in 6), and plot the actual and predicted values
 # for this model.
 
+df <- group_by(trips_with_weather, ymd, tmin) %>% summarize(num_trips = n())
 
+model <- lm(num_trips~tmin+poly(tmin, 10, raw = T), df)
+df$predicted <- predict(model, df)
+
+ggplot(df) +
+  geom_line(aes(x = ymd, y = num_trips, color = "red")) +
+  geom_line(aes(x = ymd, y = predicted))
