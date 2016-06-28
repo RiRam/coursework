@@ -55,9 +55,10 @@ weather <- mutate(weather,
                   ymd = as.Date(parse_datetime(date, "%Y%m%d")))
 weather <- tbl_df(weather)
 
-# save data frame for easy loading in the future
-save(trips, weather, file='trips.RData')
-
-
 # join trips and weather
 trips_with_weather <- inner_join(trips, weather, by="ymd")
+
+# save data frame for easy loading in the future
+save(trips, weather, trips_with_weather, file='trips.RData')
+
+
