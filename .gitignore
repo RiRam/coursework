@@ -1,6 +1,6 @@
 .Rproj.user
 .Rhistory
-*.RData
+trips.RData
 *.ipynb
 *.swp
 *.csv
