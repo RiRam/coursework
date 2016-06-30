@@ -25,8 +25,7 @@ weather <- tbl_df(weather)
 weather <- mutate(weather, day = wday(ymd, T, F))
 weather <- mutate(weather, is_weekend = ifelse(weather$day == "Saturday" | weather$day == "Sunday", TRUE, FALSE))
 
-holidays <- c("2014-01-01", "2014-01-20", "2014-02-17", "2014-04-20", "2014-05-11", "2014-05-26", "2014-07-04", "2014-09-01", "2014-10-13", "2014-11-11", "2014-11-27", "2014-12-24", "2014-12-25", "2014-12-31")
-holidays <- as.Date(holidays)
+holidays <- as.Date(c("2015-01-01", "2015-01-19", "2015-02-16", "2015-05-25", "2015-07-03", "2015-09-07", "2015-10-12", "2015-11-11", "2015-11-26", "2015-12-25"))
 weather <- mutate(weather, is_holiday = ymd %in% holidays)
 
 # predict
