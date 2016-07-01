@@ -1,6 +1,6 @@
 library(dplyr)
 library(readr)
-
+library(lubridate)
 
 # load model
 load("model.RData")
@@ -29,4 +29,15 @@ holidays <- as.Date(c("2015-01-01", "2015-01-19", "2015-02-16", "2015-05-25", "2
 weather <- mutate(weather, is_holiday = ymd %in% holidays)
 
 # predict
-weather$predicted <- predict(model, weather)
+df$predicted <- predict(model, weather)
+
+# plot prediction
+ggplot(weather, aes(x = ymd, y = predicted)) + geom_point()
+
+# plot prediction vs actual
+ggplot(df, aes(x = num_trips, y = predicted)) + geom_point()
+
+# rmse
+df <- mutate(df, diff = (num_trips - predicted)^2)
+rmse <- sqrt(sum(df$diff)/nrow(df))
+rmse
