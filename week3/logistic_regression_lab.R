@@ -44,9 +44,20 @@ confusionMatrix(test$good_pred, test$good)
 
 ########################
 ## 1. Let’s load the Titanic training data. What are the odds of surviving the shipwreck?
-install.packages("titanic")
-library(titanic)
-summary(Titanic)
+library(dplyr)
+library(ggplot2)
+library(stargazer)
+data <- read.csv("https://www.dropbox.com/s/eg6kack8wmlqmhg/titanic_train.csv?raw=1")
+prop.table(table(data$Survived))
+# 0.6161616 0.3838384 
+.38/.62
+# 0.6129032
+# ~61% survival
+
+# !!! also could do
+l1 <- glm(Survived ~ 1, data=data, family="binomial")
+summary(l1)
+round(exp(coef(l1)),2)
 
 ## 2. Using the logit model, estimate how much lower are the odds of survival for men relative to women?
 logit <- glm(Survived ~ Sex -1, data = df, family = "binomial")

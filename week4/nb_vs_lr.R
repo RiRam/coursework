@@ -104,3 +104,11 @@ rbind(roc_nb, roc_lr) %>%
   scale_y_continuous(labels=percent, lim=c(0,1)) +
   theme(legend.position=c(0.8,0.2), legend.title=element_blank())
 
+# use sampling to approximate the AUC
+# sample pairs of randomly selected positive and negative examples 
+# compute the fraction of time the positive example scored higher than the negative one
+predicted <- probs
+actual <- yTest == "spam"
+ndx_pos <- sample(which(actual == 1), size=100, replace=T)
+ndx_neg <- sample(which(actual == 0), size=100, replace=T)
+mean(predicted[ndx_pos] > predicted[ndx_neg])
