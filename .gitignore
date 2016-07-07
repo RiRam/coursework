@@ -9,6 +9,6 @@ trips.RData
 *.html
 *.pl
 split_ratings.sh
-*.csv
+*.tsv
 *~
 *.zip
