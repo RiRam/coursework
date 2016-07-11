@@ -8,6 +8,10 @@ if __name__ == '__main__':
     d = {}
     measures = {}
 
+    # Computing the median (like this) has added an additional memory requirement
+    # of storing a sorted copy and then determine the length of the list and an
+    # index at which the median is. If there is an even number of items, an average
+    # of the two middle values is calculated.
     def median(list):
         sortedList = sorted(list)
         listLen = len(list)
@@ -41,11 +45,13 @@ if __name__ == '__main__':
         # (minimum, median, mean, and maximum)
         if k in d:
             d[k].append(v)
-            measures[k] = [min(d[k]), median(d[k]), mean(d[k]), max(d[k])]
+            #measures[k] = [min(d[k]), median(d[k]), mean(d[k]), max(d[k])]
+            measures[k] = [min(d[k]), mean(d[k]), max(d[k])]
         else:
             d[k] = []
             d[k].append(v)
-            measures[k] = [v, v, v, v]
+            #measures[k] = [v, v, v, v]
+            measures[k] = [v, v, v]
             
             
     fileinput.close()
@@ -58,3 +64,10 @@ if __name__ == '__main__':
         filewriter.write(string)
         
     filewriter.close()    
+    
+    # Assuming that all the provided data was sorted by key, the minimum memory
+    # footprint would change because one wouldn't need to store the values in a 
+    # dictionary by key, one could instead store them in a list, and each set of 
+    # measures can be calculated at the end of each section.
+    # Also, instead of recalculating the measures at each line read, they can be 
+    # calculated once, removing the need to update them in the dictionary. 
